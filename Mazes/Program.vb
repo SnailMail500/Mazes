@@ -3,12 +3,45 @@ Imports System.IO.IsolatedStorage
 
 Module Program
     Dim mazeGrid(10, 10) As String
-    Sub Main()
+    Dim xCoord As Integer = 6 'subject to change when generating mazes
+    Dim yCoord As Integer = 1 'also subject to change when generating mazes
+    Dim xCoordCheck As Integer = xCoord
+    Dim yCoordCheck As Integer = yCoord
+    Dim userInput As String
+    Sub Main() 'does literally everything else
         Dim theEnd As Boolean = False
+        Dim userInput As String
+        Dim currentLocation(1, 1)
+        Dim occupiedSpace As Boolean = False
         Console.WriteLine("Mazes...")
         Call mazeBuilder()
         Call displayMaze()
+        'While True
+        '    Beep() (I thought this was funny for a total of about 5 seconds)
+        'End While
         While theEnd = True
+            displayMaze()
+            userInput = Console.ReadKey(True) 'what in the name of all that is unholy- do i need the 'userInput =' ?
+            While occupiedSpace = False
+                Select Case userInput
+                    Case "w"
+                        Call wPressed()
+                    Case "s"
+                        yCoordCheck -= 1
+                        Select Case yCoordCheck
+                            Case > 10
+                                Console.Clear()
+                                Console.WriteLine("Out of bounds- try again")
+                                Call displayMaze()
+                            Case Else
+                                mazeGrid(xCoord, yCoord) = 0
+                                yCoord -= 1
+                                mazeGrid(xCoord, yCoord) = "T "
+                                Call displayMaze()
+                        End Select
+                End Select
+            End While
+        End While
     End Sub
     Sub mazeBuilder() 'creates the maze as 10x10 2d array
         For i = 1 To 10
@@ -70,5 +103,31 @@ Module Program
             Next
             Console.Write(vbCrLf)
         Next
+    End Sub
+    Sub wPressed()
+        Select Case userInput.ToLower
+            Case "w"
+                yCoordCheck += 1
+                Select Case yCoordCheck
+                    Case < 1
+                        Console.Clear()
+                        Console.WriteLine("Out of bounds- try again")
+                        Call displayMaze()
+                    Case Else
+                        mazeGrid(xCoord, yCoord) = 0
+                        yCoord += 1
+                        mazeGrid(xCoord, yCoord) = "T "
+                        Call displayMaze()
+                End Select
+        End Select
+    End Sub
+    Sub sPressed()
+
+    End Sub
+    Sub aPressed()
+
+    End Sub
+    Sub dPressed()
+
     End Sub
 End Module
