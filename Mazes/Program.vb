@@ -8,11 +8,11 @@ Module Program
     Dim xCoordCheck As Integer = xCoord
     Dim yCoordCheck As Integer = yCoord
     Dim userInput As String
+    Dim theEnd As Boolean = False
+    'I do not like the amount of global variables I need here.
     Sub Main() 'does literally everything else
-        Dim theEnd As Boolean = False
         Dim userInput As String
         Dim currentLocation(1, 1)
-        Dim occupiedSpace As Boolean = False
         Console.WriteLine("Mazes...")
         Call mazeBuilder()
         Call displayMaze()
@@ -22,31 +22,22 @@ Module Program
         While theEnd = True
             displayMaze()
             userInput = Console.ReadKey(True) 'what in the name of all that is unholy- do i need the 'userInput =' ?
-            While occupiedSpace = False
-                Select Case userInput
-                    Case "w"
-                        Call wPressed()
-                    Case "s"
-                        yCoordCheck -= 1
-                        Select Case yCoordCheck
-                            Case > 10
-                                Console.Clear()
-                                Console.WriteLine("Out of bounds- try again")
-                                Call displayMaze()
-                            Case Else
-                                mazeGrid(xCoord, yCoord) = 0
-                                yCoord -= 1
-                                mazeGrid(xCoord, yCoord) = "T "
-                                Call displayMaze()
-                        End Select
-                End Select
-            End While
+            Select Case userInput
+                Case "w"
+                    Call wPressed()
+                Case "s"
+                    Call sPressed()
+                Case "a"
+                    Call aPressed()
+                Case "d"
+                    Call dPressed()
+            End Select
         End While
     End Sub
     Sub mazeBuilder() 'creates the maze as 10x10 2d array
         For i = 1 To 10
             For j = 1 To 10
-                mazeGrid(i, j) = "X "
+                mazeGrid(i, j) = "+ "
             Next
         Next
 
@@ -105,29 +96,92 @@ Module Program
         Next
     End Sub
     Sub wPressed()
-        Select Case userInput.ToLower
-            Case "w"
-                yCoordCheck += 1
-                Select Case yCoordCheck
-                    Case < 1
-                        Console.Clear()
-                        Console.WriteLine("Out of bounds- try again")
-                        Call displayMaze()
-                    Case Else
-                        mazeGrid(xCoord, yCoord) = 0
-                        yCoord += 1
-                        mazeGrid(xCoord, yCoord) = "T "
-                        Call displayMaze()
-                End Select
+        yCoordCheck += 1
+        If mazeGrid(xCoord, yCoordCheck) = "+ " Then
+            Console.Clear()
+            Console.WriteLine("Oops, you hit a wall!")
+            Call displayMaze()
+        End If
+        Select Case yCoordCheck
+            Case < 1
+                Console.Clear()
+                Console.WriteLine("Out of bounds- try again")
+                Call displayMaze()
+            Case > 1
+                Console.Clear()
+                Console.WriteLine("Outstanding Move.")
+                mazeGrid(xCoord, yCoord) = "  "
+                yCoord += 1
+                mazeGrid(xCoord, yCoord) = "T "
+                Call displayMaze()
         End Select
     End Sub
     Sub sPressed()
-
+        yCoordCheck -= 1
+        If mazeGrid(xCoord, yCoordCheck) = "+ " Then
+            Console.Clear()
+            Console.WriteLine("Oops, you hit a wall!")
+            Call displayMaze()
+        End If
+        Select Case yCoordCheck
+            Case < 10
+                Console.Clear()
+                Console.WriteLine("Out of bounds- try again")
+                Call displayMaze()
+            Case > 1
+                Console.Clear()
+                Console.WriteLine("Outstanding Move.")
+                mazeGrid(xCoord, yCoord) = "  "
+                yCoord -= 1
+                mazeGrid(xCoord, yCoord) = "T "
+                Call displayMaze()
+            Case = 10
+                Console.Clear()
+                Console.WriteLine("Congratulations. You completed the maze.")
+                TheEnd = True
+        End Select
     End Sub
     Sub aPressed()
-
+        xCoordCheck -= 1
+        If mazeGrid(xCoordCheck, yCoord) = "+ " Then
+            Console.Clear()
+            Console.WriteLine("Oops, you hit a wall!")
+            Call displayMaze()
+        End If
+        Select Case xCoordCheck
+            Case > 10
+                Console.Clear()
+                Console.WriteLine("Out of bounds- try again")
+                Call displayMaze()
+            Case > 1
+                Console.Clear()
+                Console.WriteLine("Outstanding Move.")
+                mazeGrid(xCoord, yCoord) = "  "
+                xCoord -= 1
+                mazeGrid(xCoord, yCoord) = "T "
+                Call displayMaze()
+        End Select
     End Sub
     Sub dPressed()
-
+        xCoordCheck += 1
+        If mazeGrid(xCoordCheck, yCoord) = "+ " Then
+            Console.Clear()
+            Console.WriteLine("Oops, you hit a wall!")
+            Call displayMaze()
+        End If
+        Select Case xCoordCheck
+            Case < 10
+                Console.Clear()
+                Console.WriteLine("Out of bounds- try again")
+                Call displayMaze()
+            Case > 1
+                Console.Clear()
+                Console.WriteLine("Outstanding Move.")
+                mazeGrid(xCoord, yCoord) = "  "
+                xCoord -= 1
+                mazeGrid(xCoord, yCoord) = "T "
+                Call displayMaze()
+        End Select
     End Sub
 End Module
+'I even commented this. Well done me.
