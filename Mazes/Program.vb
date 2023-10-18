@@ -7,11 +7,10 @@ Module Program
     Dim yCoord As Integer = 1 'also subject to change when generating mazes
     Dim xCoordCheck As Integer = xCoord
     Dim yCoordCheck As Integer = yCoord
-    Dim userInput As String
+    Dim userInput As Char
     Dim theEnd As Boolean = False
     'I do not like the amount of global variables I need here.
     Sub Main() 'does literally everything else
-        Dim userInput As String
         Dim currentLocation(1, 1)
         Console.WriteLine("Mazes...")
         Call mazeBuilder()
@@ -21,7 +20,7 @@ Module Program
         'End While
         While theEnd = True
             displayMaze()
-            userInput = Console.ReadKey(True) 'what in the name of all that is unholy- do i need the 'userInput =' ?
+            userInput = Console.ReadKey(True).KeyChar As Char 'what in the name of all that is unholy- do i need the 'userInput =' ?
             Select Case userInput
                 Case "w"
                     Call wPressed()
