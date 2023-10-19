@@ -8,7 +8,6 @@ Module Program
     Dim xCoordCheck As Integer = xCoord
     Dim yCoordCheck As Integer = yCoord
     Dim userInput As Char
-    Dim pureInput As Char
     Dim theEnd As Boolean = False
     'I do not like the amount of global variables I need here.
     Sub Main() 'does literally everything else
